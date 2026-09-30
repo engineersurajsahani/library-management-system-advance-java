@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <c:set var="pageTitle" value="Search Books"/>
 <c:set var="activeNav" value="catalog"/>
 <%@ include file="../common/head.jsp" %>
@@ -35,19 +36,66 @@
 
       <div class="catalog-grid" id="catalogGrid">
         <c:forEach var="b" items="${books}">
+          <%-- Category-based badge color + emoji --%>
+          <c:set var="catLower" value="${fn:toLowerCase(b.category)}"/>
+          <c:choose>
+            <c:when test="${fn:contains(catLower, 'programming')}">
+              <c:set var="catClass" value="chip-cat-blue"/><c:set var="catEmoji" value="💻"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'database')}">
+              <c:set var="catClass" value="chip-cat-indigo"/><c:set var="catEmoji" value="🗄️"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'algorithm')}">
+              <c:set var="catClass" value="chip-cat-violet"/><c:set var="catEmoji" value="🧮"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'network')}">
+              <c:set var="catClass" value="chip-cat-teal"/><c:set var="catEmoji" value="🌐"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'math')}">
+              <c:set var="catClass" value="chip-cat-pink"/><c:set var="catEmoji" value="📐"/>
+            </c:when>
+            <c:when test="${catLower == 'ai' or fn:contains(catLower, 'intelligence')}">
+              <c:set var="catClass" value="chip-cat-amber"/><c:set var="catEmoji" value="🤖"/>
+            </c:when>
+            <c:when test="${catLower == 'web'}">
+              <c:set var="catClass" value="chip-cat-cyan"/><c:set var="catEmoji" value="🕸️"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'framework')}">
+              <c:set var="catClass" value="chip-cat-green"/><c:set var="catEmoji" value="🌱"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'software') or fn:contains(catLower, 'engineering')}">
+              <c:set var="catClass" value="chip-cat-slate"/><c:set var="catEmoji" value="🖥️"/>
+            </c:when>
+            <c:when test="${fn:contains(catLower, 'computer')}">
+              <c:set var="catClass" value="chip-cat-deep"/><c:set var="catEmoji" value="🎓"/>
+            </c:when>
+            <c:otherwise>
+              <c:set var="catClass" value="chip-cyan"/><c:set var="catEmoji" value="📖"/>
+            </c:otherwise>
+          </c:choose>
+
           <article class="book-card card-3d" data-tilt>
             <div class="book-card__cover">
-              <span class="book-card__emoji">📕</span>
-              <span class="chip chip-cyan book-card__cat"><c:out value="${b.category}"/></span>
+              <span class="book-card__emoji">${catEmoji}</span>
+              <span class="chip ${catClass} book-card__cat"><c:out value="${b.category}"/></span>
             </div>
             <div class="book-card__body">
               <h3 class="book-card__title"><c:out value="${b.title}"/></h3>
               <p class="book-card__author">✍️ <c:out value="${b.author}"/></p>
               <div class="book-card__meta">
                 <span class="muted mono small"><c:out value="${b.isbn}"/></span>
-                <span class="chip ${b.availableCopies > 0 ? 'chip-green' : 'chip-red'}">
-                  ${b.availableCopies > 0 ? b.availableCopies + ' available' : 'Not available'}
-                </span>
+                <%-- 3-state availability: green (>1) / amber (1 left) / red (0) --%>
+                <c:choose>
+                  <c:when test="${b.availableCopies > 1}">
+                    <span class="chip chip-green avail"><span class="avail-dot"></span><c:out value="${b.availableCopies}"/> available</span>
+                  </c:when>
+                  <c:when test="${b.availableCopies == 1}">
+                    <span class="chip chip-amber avail"><span class="avail-dot"></span>Only 1 left!</span>
+                  </c:when>
+                  <c:otherwise>
+                    <span class="chip chip-red"><span class="avail-dot avail-dot--off"></span>Not available</span>
+                  </c:otherwise>
+                </c:choose>
               </div>
               <div class="book-card__actions">
                 <c:if test="${b.availableCopies > 0}">

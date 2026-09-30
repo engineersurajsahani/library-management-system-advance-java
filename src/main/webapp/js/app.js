@@ -78,27 +78,62 @@
       return d.innerHTML;
     }
 
+    /* Category → {badge class, emoji} mapping (mirrors catalog.jsp) */
+    var CATEGORY_STYLES = [
+      { match: 'programming',  cls: 'chip-cat-blue',   emoji: '💻' },
+      { match: 'database',     cls: 'chip-cat-indigo', emoji: '🗄️' },
+      { match: 'algorithm',    cls: 'chip-cat-violet', emoji: '🧮' },
+      { match: 'network',      cls: 'chip-cat-teal',   emoji: '🌐' },
+      { match: 'math',         cls: 'chip-cat-pink',   emoji: '📐' },
+      { match: 'intelligence', cls: 'chip-cat-amber',  emoji: '🤖' },
+      { match: 'ai',           cls: 'chip-cat-amber',  emoji: '🤖' },
+      { match: 'web',          cls: 'chip-cat-cyan',   emoji: '🕸️' },
+      { match: 'framework',    cls: 'chip-cat-green',  emoji: '🌱' },
+      { match: 'software',     cls: 'chip-cat-slate',  emoji: '🖥️' },
+      { match: 'engineering',  cls: 'chip-cat-slate',  emoji: '🖥️' },
+      { match: 'computer',     cls: 'chip-cat-deep',   emoji: '🎓' }
+    ];
+
+    function categoryStyle(category) {
+      var cat = (category || '').toLowerCase();
+      for (var i = 0; i < CATEGORY_STYLES.length; i++) {
+        if (cat.indexOf(CATEGORY_STYLES[i].match) !== -1) {
+          return CATEGORY_STYLES[i];
+        }
+      }
+      return { cls: 'chip-cyan', emoji: '📖' };
+    }
+
+    function availabilityChip(copies) {
+      if (copies > 1) {
+        return '<span class="chip chip-green avail"><span class="avail-dot"></span>' + copies + ' available</span>';
+      }
+      if (copies === 1) {
+        return '<span class="chip chip-amber avail"><span class="avail-dot"></span>Only 1 left!</span>';
+      }
+      return '<span class="chip chip-red"><span class="avail-dot avail-dot--off"></span>Not available</span>';
+    }
+
     function render(books) {
       if (!books.length) {
         grid.innerHTML = '<div class="empty empty--wide">No books match your search. 🔎</div>';
         return;
       }
       grid.innerHTML = books.map(function (b, idx) {
+        var cat = categoryStyle(b.category);
         var available = b.availableCopies > 0;
         return '' +
           '<article class="book-card card-3d" data-tilt style="animation-delay:' + (idx * 0.04) + 's">' +
             '<div class="book-card__cover">' +
-              '<span class="book-card__emoji">📕</span>' +
-              '<span class="chip chip-cyan book-card__cat">' + esc(b.category) + '</span>' +
+              '<span class="book-card__emoji">' + cat.emoji + '</span>' +
+              '<span class="chip ' + cat.cls + ' book-card__cat">' + esc(b.category) + '</span>' +
             '</div>' +
             '<div class="book-card__body">' +
               '<h3 class="book-card__title">' + esc(b.title) + '</h3>' +
               '<p class="book-card__author">✍️ ' + esc(b.author) + '</p>' +
               '<div class="book-card__meta">' +
                 '<span class="muted mono small">' + esc(b.isbn) + '</span>' +
-                '<span class="chip ' + (available ? 'chip-green' : 'chip-red') + '">' +
-                  (available ? b.availableCopies + ' available' : 'Not available') +
-                '</span>' +
+                availabilityChip(b.availableCopies) +
               '</div>' +
               '<div class="book-card__actions">' +
                 (available
