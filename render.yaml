@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: library-management-system
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    disk:
+      name: lms-sqlite-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: LMS_DB_PATH
+        value: /data/lms.db
