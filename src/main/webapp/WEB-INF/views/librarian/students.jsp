@@ -14,7 +14,7 @@
         <p class="page-sub">${total} registered students</p>
       </div>
       <div class="page-actions">
-        <a class="btn btn-primary ripple" href="add">➕ Add Student</a>
+        <a class="btn btn-primary ripple" href="${pageContext.request.contextPath}/librarian/students/add">➕ Add Student</a>
       </div>
     </header>
 
@@ -51,14 +51,14 @@
                   <span class="chip ${s.active ? 'chip-green' : 'chip-red'}">${s.active ? 'Active' : 'Inactive'}</span>
                 </td>
                 <td class="ta-r actions-cell">
-                  <a class="icon-btn" title="Edit" href="edit?id=${s.id}">✏️</a>
-                  <form class="inline-form" method="post" action="toggle"
+                  <a class="icon-btn" title="Edit" href="${pageContext.request.contextPath}/librarian/students/edit?id=${s.id}">✏️</a>
+                  <form class="inline-form" method="post" action="${pageContext.request.contextPath}/librarian/students/toggle"
                         onsubmit="return confirm('Toggle active status?')">
                     <input type="hidden" name="_csrf" value="<%= com.lms.util.CsrfUtil.getToken(session) %>">
                     <input type="hidden" name="id" value="${s.id}">
                     <button class="icon-btn" title="Toggle" type="submit">${s.active ? '🚫' : '✔️'}</button>
     </form>
-                  <form class="inline-form" method="post" action="delete"
+                  <form class="inline-form" method="post" action="${pageContext.request.contextPath}/librarian/students/delete"
                         onsubmit="return confirm('Delete this student? This cannot be undone.')">
                     <input type="hidden" name="_csrf" value="<%= com.lms.util.CsrfUtil.getToken(session) %>">
                     <input type="hidden" name="id" value="${s.id}">

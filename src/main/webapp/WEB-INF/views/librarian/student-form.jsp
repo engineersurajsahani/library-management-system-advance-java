@@ -26,7 +26,7 @@
     </c:if>
 
     <div class="panel card-3d" data-tilt>
-      <form method="post" class="form-grid" action="${mode == 'add' ? 'add' : 'edit'}">
+      <form method="post" class="form-grid" action="${pageContext.request.contextPath}/librarian/students/${mode == 'add' ? 'add' : 'edit'}">
         <input type="hidden" name="_csrf" value="<%= com.lms.util.CsrfUtil.getToken(session) %>">
         <c:if test="${mode == 'edit'}">
           <input type="hidden" name="id" value="${student.id}">

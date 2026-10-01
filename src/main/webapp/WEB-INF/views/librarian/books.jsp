@@ -14,7 +14,7 @@
         <p class="page-sub">${total} titles in the catalog</p>
       </div>
       <div class="page-actions">
-        <a class="btn btn-primary ripple" href="add">➕ Add Book</a>
+        <a class="btn btn-primary ripple" href="${pageContext.request.contextPath}/librarian/books/add">➕ Add Book</a>
       </div>
     </header>
 
@@ -57,8 +57,8 @@
                 </td>
                 <td><c:out value="${b.shelf}"/></td>
                 <td class="ta-r actions-cell">
-                  <a class="icon-btn" title="Edit" href="edit?id=${b.id}">✏️</a>
-                  <form class="inline-form" method="post" action="delete"
+                  <a class="icon-btn" title="Edit" href="${pageContext.request.contextPath}/librarian/books/edit?id=${b.id}">✏️</a>
+                  <form class="inline-form" method="post" action="${pageContext.request.contextPath}/librarian/books/delete"
                         onsubmit="return confirm('Delete this book?')">
                     <input type="hidden" name="_csrf" value="<%= com.lms.util.CsrfUtil.getToken(session) %>">
                     <input type="hidden" name="id" value="${b.id}">
