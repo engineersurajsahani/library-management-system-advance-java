@@ -549,6 +549,16 @@ body.app-body {
   padding: 12px;
 }
 .login-hint__row { display: flex; gap: 8px; align-items: center; justify-content: center; }
+.login-credits {
+  margin: 0;
+  text-align: center;
+  color: var(--md-muted);
+  font-size: .86rem;
+  font-weight: 600;
+  line-height: 1.7;
+  animation: fadeUp .6s .15s ease both;
+}
+.login-credits span { font-weight: 400; opacity: .85; font-size: .8rem; }
 
 /* ---------- Catalog ---------- */
 .catalog-grid {
@@ -625,8 +635,17 @@ body.app-body {
   padding: 18px 30px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 18px;
   color: var(--md-muted);
   font-size: .84rem;
+}
+.footer-credits { display: flex; flex-direction: column; line-height: 1.5; }
+.footer-credits small { font-size: .76rem; opacity: .85; }
+@media (max-width: 640px) {
+  .footer { justify-content: center; text-align: center; }
+  .footer-credits { align-items: center; }
 }
 
 /* ---------- Error page ---------- */

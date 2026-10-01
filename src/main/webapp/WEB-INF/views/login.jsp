@@ -36,6 +36,11 @@
       <div class="login-hint__row"><span class="chip chip-cyan">Student</span> student / student123</div>
     </div>
   </section>
+
+  <p class="login-credits">
+    Created by Sonu Sahani &bull; Aryan Prajapati &bull; Mayuresh Nikam &bull; Sumit Gupta<br>
+    <span>Students of Smt. Indira Gandhi College Of Engineering</span>
+  </p>
 </main>
 
 <%@ include file="common/footer.jsp" %>
